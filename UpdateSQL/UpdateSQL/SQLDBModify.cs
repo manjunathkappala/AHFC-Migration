@@ -35,7 +35,7 @@ namespace UpdateSQL
             r_object_id = string.Empty, content_id = string.Empty, r_folder_path = string.Empty, i_full_format = string.Empty, r_object_type = string.Empty;
             try
             {
-                if (SqlType == Constants.ONPREMISESSQL)
+                if (SqlType.ToUpper() == Constants.ONPREMISESSQL.ToUpper())
                 {
 
                     //SQL Integrated Connection string building
@@ -46,7 +46,7 @@ namespace UpdateSQL
                     "App=EntityFramework providerName=System.Data.EntityClient";
                 }
 
-                else if (SqlType == Constants.AZURESQL)
+                else if (SqlType.ToUpper() == Constants.AZURESQL.ToUpper())
                 {
                     //SQL Integrated Connection string building
                     ConnectionString = "Server =" + AzureSqlDBServer + ";" + "Initial Catalog=" + AzureSqlDB + ";" + "Persist Security Info = False;" + "User ID=" + userName + ";" + "Password=" + password + ";" + "MultipleActiveResultSets = False; Encrypt = True; TrustServerCertificate = False; Connection Timeout = 30";
@@ -191,8 +191,8 @@ namespace UpdateSQL
             string query = string.Empty;
             try
             {
-                query = "INSERT INTO " + Table + " (r_object_id, i_chronicle_id, content_id, r_object_type, r_folder_path,  i_full_format,a_webc_url,title,object_name,display_order,r_modify_date)";
-                query += " VALUES (@r_object_id, @i_chronicle_id, @content_id, @r_object_type, @r_folder_path, @i_full_format,@a_webc_url,@title,@object_name,@display_order,GETDATE())";
+                query = "INSERT INTO " + Table + " (r_object_id, i_chronicle_id, content_id, r_object_type, r_folder_path,  i_full_format,a_webc_url,title,object_name,display_order,r_modify_date,fiscal_year)";
+                query += " VALUES (@r_object_id, @i_chronicle_id, @content_id, @r_object_type, @r_folder_path, @i_full_format,@a_webc_url,@title,@object_name,@display_order,GETDATE(),'0')";
 
                 using (SqlCommand command = sqlConnection.CreateCommand())
                 {

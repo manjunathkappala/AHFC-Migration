@@ -18,16 +18,17 @@ namespace UpdateSQL
         {
             try
             {
-                if (ConfigurationManager.AppSettings[Constants.SQL_TYPE].ToUpper() == Constants.ONPREMISESSQL)
+                log4net.GlobalContext.Properties[Constants.R_OBJECT_ID] = string.Empty;
+                if (ConfigurationManager.AppSettings[Constants.SQL_TYPE].ToString().ToUpper() == Constants.ONPREMISESSQL.ToUpper())
                 {
                     ReadFile();
                 }
-                else if (ConfigurationManager.AppSettings[Constants.SQL_TYPE] == Constants.AZURESQL)
+                else if (ConfigurationManager.AppSettings[Constants.SQL_TYPE].ToString().ToUpper() == Constants.AZURESQL.ToUpper())
                 {
                     Console.WriteLine("Enter the username to connect Azure SQL db :");
                     userName = Console.ReadLine();
-                    Console.WriteLine("Enter the password");
-                    password = Console.ReadLine();
+                    //Console.WriteLine("Enter the password :");
+                    Readpassword();
 
                     if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(password))
                         ReadFile();
@@ -39,7 +40,7 @@ namespace UpdateSQL
             {
                 log.Error($"Exception occurred in Main method :{ex.Message} ,Details: {ex.InnerException}");
             }
-
+            Console.ReadLine();
         }
 
         public static void ReadFile()
@@ -57,7 +58,10 @@ namespace UpdateSQL
                         DataTable csvData = ConvertCSVtoDataTable(Filepath);
                         log.Info("Number of rows in CSV file : " + csvData.Rows.Count);
                         Console.WriteLine("File read successful.");
+                        Console.WriteLine("Processing data......");
                         sQLDBModify.Update(csvData, userName, password);
+                        Console.WriteLine("Processing data successful");
+                        Console.WriteLine("Generated log file in given configured path");
                     }
                     else
                     {
@@ -112,6 +116,34 @@ namespace UpdateSQL
             }
 
             return csvdatarows;
+        }
+
+        public static string Readpassword()
+        {
+            Console.WriteLine("Enter the password :");
+            ConsoleKeyInfo info = Console.ReadKey(true);
+            while (info.Key != ConsoleKey.Enter)
+            {
+                if (info.Key != ConsoleKey.Backspace)
+                {
+                    Console.Write("*");
+                    password += info.KeyChar;
+                }
+                else if (info.Key == ConsoleKey.Backspace)
+                {
+                    if (!string.IsNullOrEmpty(password))
+                    {
+                        password = password.Substring(0, password.Length - 1);
+                        int pos = Console.CursorLeft;
+                        Console.SetCursorPosition(pos - 1, Console.CursorTop);
+                        Console.Write(" ");
+                        Console.SetCursorPosition(pos - 1, Console.CursorTop);
+                    }
+                }
+                info = Console.ReadKey(true);
+            }
+            Console.WriteLine();
+            return password;
         }
     }
 
