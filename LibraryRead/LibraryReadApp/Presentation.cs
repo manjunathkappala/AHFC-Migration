@@ -19,11 +19,12 @@ namespace LibraryReadApp
         {
             dtResponse.Columns.Add(Constants.LibraryName);
             dtResponse.Columns.Add(Constants.R_object_type);
-            dtResponse.Columns.Add(Constants.Documentum_i_chronicle_id);
             dtResponse.Columns.Add(Constants.Documentum_r_object_id);
+            dtResponse.Columns.Add(Constants.Documentum_i_chronicle_id);
             dtResponse.Columns.Add(Constants.Documentum_content_id);
             dtResponse.Columns.Add(Constants.Documentum_r_folder_path);
-            dtResponse.Columns.Add(Constants.Title);
+            //dtResponse.Columns.Add(Constants.Title);
+            dtResponse.Columns.Add(Constants.FileName);
             dtResponse.Columns.Add(Constants.I_full_format);
             dtResponse.Columns.Add(Constants.A_webc_url);
             dtResponse.Columns.Add(Constants.R_object_id);
@@ -35,7 +36,7 @@ namespace LibraryReadApp
 
         public DataTable GetListFileId()
         {
-            string Name = string.Empty, guid = string.Empty, Version = string.Empty, Id = string.Empty, documentum_content_id = string.Empty, display_order = string.Empty,
+            string Name = string.Empty, guid = string.Empty, Version = string.Empty, Id = string.Empty, documentum_content_id = string.Empty, display_order = string.Empty, title = string.Empty,
                    documentum_i_chronicle_id = string.Empty, documentum_r_object_id = string.Empty, ThumbnailName = string.Empty;
             SecureString secureString = null;
             List list = null;
@@ -55,19 +56,9 @@ namespace LibraryReadApp
 
                     foreach (var obj in items)
                     {
-                        ListItem listItem = obj.File.ListItemAllFields;
-                        clientContext.Load(listItem, item => item[SPOConstants.Id],
-                                                 item => item[SPOConstants.Name],
-                                                 item => item[SPOConstants.UniqueId],
-                                                 item => item[SPOConstants.UIVersionString],
-                                                 item => item[SPOConstants.SortOrder],
-                                                 //item => item[SPOConstants.Documentum_i_chronicle_id],
-                                                 item => item[SPOConstants.Documentum_r_object_id]);
-                        //item => item[SPOConstants.Documentum_content_id]);
-                        clientContext.ExecuteQuery();
-
                         Dictionary<string, object> keyValuePairs = obj.FieldValues;
 
+                        //title = keyValuePairs.ContainsKey(SPOConstants.Title) ? (keyValuePairs[SPOConstants.Title] != null ? keyValuePairs[SPOConstants.Title].ToString() : "") : "";
                         Id = keyValuePairs.ContainsKey(SPOConstants.Id) ? (keyValuePairs[SPOConstants.Id] != null ? keyValuePairs[SPOConstants.Id].ToString() : "") : "";
                         Name = keyValuePairs.ContainsKey(SPOConstants.Name) ? (keyValuePairs[SPOConstants.Name] != null ? keyValuePairs[SPOConstants.Name].ToString() : "") : "";
                         guid = keyValuePairs.ContainsKey(SPOConstants.UniqueId) ? (keyValuePairs[SPOConstants.UniqueId] != null ? keyValuePairs[SPOConstants.UniqueId].ToString() : "") : "";
@@ -93,7 +84,7 @@ namespace LibraryReadApp
 
         private void GetChildItem(ClientContext clientContext, string Id, string ParentGuid, string i_chronicle_id, string r_object_id, string content_id, string display_order, ref DataTable dtResponse)
         {
-            string Name = string.Empty, guid = string.Empty, Version = string.Empty, ListId = string.Empty,
+            string Name = string.Empty, guid = string.Empty, Version = string.Empty, ListId = string.Empty, title = string.Empty,
                    ThumbnailName = string.Empty;
             SecureString secureString = null;
             List list = null;
@@ -126,15 +117,9 @@ namespace LibraryReadApp
 
                 foreach (var obj in items)
                 {
-                    ListItem listItem = obj.File.ListItemAllFields;
-                    clientContext.Load(listItem, item => item[SPOConstants.Id],
-                                             item => item[SPOConstants.Name],
-                                             item => item[SPOConstants.UniqueId],
-                                             item => item[SPOConstants.UIVersionString]);
-                    clientContext.ExecuteQuery();
-
                     Dictionary<string, object> keyValuePairs = obj.FieldValues;
 
+                    //title = keyValuePairs.ContainsKey(SPOConstants.Title) ? (keyValuePairs[SPOConstants.Title] != null ? keyValuePairs[SPOConstants.Title].ToString() : "") : "";
                     ListId = keyValuePairs.ContainsKey(SPOConstants.Id) ? (keyValuePairs[SPOConstants.Id] != null ? keyValuePairs[SPOConstants.Id].ToString() : "") : "";
                     Name = keyValuePairs.ContainsKey(SPOConstants.Name) ? (keyValuePairs[SPOConstants.Name] != null ? keyValuePairs[SPOConstants.Name].ToString() : "") : "";
                     guid = keyValuePairs.ContainsKey(SPOConstants.UniqueId) ? (keyValuePairs[SPOConstants.UniqueId] != null ? keyValuePairs[SPOConstants.UniqueId].ToString() : "") : "";

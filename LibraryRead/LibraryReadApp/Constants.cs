@@ -15,6 +15,7 @@ namespace LibraryReadApp
         public static string Documentum_content_id = "documentum_content_id";
         public static string Documentum_r_folder_path = "documentum_r_folder_path";
         public static string Title = "title";
+        public static string FileName = "object_name";
         public static string I_full_format = "i_full_format";
         public static string A_webc_url = "a_webc_url";
         public static string R_object_id = "r_object_id";

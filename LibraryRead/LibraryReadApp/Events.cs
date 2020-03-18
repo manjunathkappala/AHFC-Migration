@@ -19,11 +19,12 @@ namespace LibraryReadApp
         {
             dtResponse.Columns.Add(Constants.LibraryName);
             dtResponse.Columns.Add(Constants.R_object_type);
-            dtResponse.Columns.Add(Constants.Documentum_i_chronicle_id);
             dtResponse.Columns.Add(Constants.Documentum_r_object_id);
+            dtResponse.Columns.Add(Constants.Documentum_i_chronicle_id);
             dtResponse.Columns.Add(Constants.Documentum_content_id);
             dtResponse.Columns.Add(Constants.Documentum_r_folder_path);
-            dtResponse.Columns.Add(Constants.Title);
+            //dtResponse.Columns.Add(Constants.Title);
+            dtResponse.Columns.Add(Constants.FileName);
             dtResponse.Columns.Add(Constants.I_full_format);
             dtResponse.Columns.Add(Constants.A_webc_url);
             dtResponse.Columns.Add(Constants.R_object_id);
@@ -35,7 +36,7 @@ namespace LibraryReadApp
 
         public DataTable GetListFileId()
         {
-            string Name = string.Empty, guid = string.Empty, Version = string.Empty, display_order = string.Empty,
+            string Name = string.Empty, guid = string.Empty, Version = string.Empty, display_order = string.Empty, title = string.Empty, fileId = string.Empty,
                 documentum_i_chronicle_id = string.Empty, documentum_r_object_id = string.Empty, documentum_content_id = string.Empty;
             SecureString secureString = null;
             List list = null;
@@ -57,7 +58,9 @@ namespace LibraryReadApp
                     {
                         Dictionary<string, object> keyValuePairs = obj.FieldValues;
 
-                        Name = keyValuePairs.ContainsKey(SPOConstants.Title) ? (keyValuePairs[SPOConstants.Title] != null ? keyValuePairs[SPOConstants.Title].ToString() : "") : "";
+                        fileId = keyValuePairs.ContainsKey(SPOConstants.Id) ? (keyValuePairs[SPOConstants.Id] != null ? keyValuePairs[SPOConstants.Id].ToString() : "") : "";
+                        //title = keyValuePairs.ContainsKey(SPOConstants.Title) ? (keyValuePairs[SPOConstants.Title] != null ? keyValuePairs[SPOConstants.Title].ToString() : "") : "";
+                        Name = "Event_" + fileId;
                         guid = keyValuePairs.ContainsKey(SPOConstants.UniqueId) ? (keyValuePairs[SPOConstants.UniqueId] != null ? keyValuePairs[SPOConstants.UniqueId].ToString() : "") : "";
                         Version = keyValuePairs.ContainsKey(SPOConstants.UIVersionString) ? (keyValuePairs[SPOConstants.UIVersionString] != null ? keyValuePairs[SPOConstants.UIVersionString].ToString() : "") : "";
                         documentum_i_chronicle_id = keyValuePairs.ContainsKey(SPOConstants.Documentum_i_chronicle_id) ? (keyValuePairs[SPOConstants.Documentum_i_chronicle_id] != null ? keyValuePairs[SPOConstants.Documentum_i_chronicle_id].ToString() : "") : "";
