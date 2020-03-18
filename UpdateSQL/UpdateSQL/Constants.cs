@@ -10,6 +10,7 @@ namespace UpdateSQL
     {
         public const string IR_ARTICLE_IMAGE = "ir_article_image";
         public const string IR_ARTICLE = "ir_article";
+        public const string IR_EVENT = "ir_event";
 
         public const string DOCUMENTUM_I_CHRONICLE_ID = "documentum_i_chronicle_id";
         public const string DOCUMENTUM_R_OBJECT_ID = "documentum_r_object_id";
@@ -20,6 +21,8 @@ namespace UpdateSQL
         public const string R_FOLDER_PATH = "r_folder_path";
         public const string I_FULL_FORMAT = "i_full_format";
         public const string R_OBJECT_TYPE = "r_object_type";
+        public const string A_WEBC_URL = "a_webc_url";
+        public const string OBJECT_NAME = "object_name";
 
         public const string FILE_PATH = "SourceFilepath";
         public const string CONNECTION_STRING = "ConnectionString";

@@ -73,12 +73,13 @@ namespace UpdateSQL
                     {
                         if (rowCount == 1)
                         {
-                            if (r_object_type.ToUpper() != Constants.IR_ARTICLE.ToUpper())
+                            if (r_object_type.ToUpper() != Constants.IR_ARTICLE.ToUpper() && r_object_type.ToUpper() != Constants.IR_EVENT.ToUpper())
                                 UpdateDB(sqlConnection, i_chronicle_id, r_object_id, content_id, r_folder_path, r_object_type, i_full_format, documentum_r_object_id, documentum_i_chronicle_id);
                             else
                             {
-                                a_webc_url = Convert.ToString(dataRow["a_webc_url"]);
-                                UpdateDB_Articles(sqlConnection, i_chronicle_id, r_object_id, content_id, r_folder_path, r_object_type, i_full_format, a_webc_url, documentum_r_object_id, documentum_i_chronicle_id);
+                                a_webc_url = Convert.ToString(dataRow[Constants.A_WEBC_URL]);
+                                title = dataRow[Constants.OBJECT_NAME].ToString();
+                                UpdateDB_Articles(sqlConnection, i_chronicle_id, r_object_id, content_id, r_folder_path, r_object_type, i_full_format, a_webc_url, documentum_r_object_id, documentum_i_chronicle_id, title);
                             }
                         }
                         else
@@ -88,13 +89,13 @@ namespace UpdateSQL
                     {
                         if (r_object_type.ToUpper() == Constants.IR_ARTICLE_IMAGE.ToUpper())
                         {
-                            a_webc_url = Convert.ToString(dataRow["a_webc_url"]);
-                            title = dataRow["title"].ToString();
+                            a_webc_url = Convert.ToString(dataRow[Constants.A_WEBC_URL]);
+                            title = dataRow[Constants.OBJECT_NAME].ToString();
                             display_order = !string.IsNullOrEmpty(dataRow["display_order"].ToString()) ? dataRow["display_order"].ToString() : "0";
                             InsertDB(sqlConnection, r_object_id, content_id, r_object_type, r_folder_path, i_full_format, a_webc_url, title, documentum_r_object_id, i_chronicle_id, display_order);
                         }
                         else
-                            log.Info($"For the given for documentum_r_object_id : {documentum_r_object_id}, content not available in sql r_object_id : {r_object_id}, i_chronicle_id : {i_chronicle_id}, content_id : {content_id}, r_folder_path : {r_folder_path}");
+                            log.Info($"For the given documentum_r_object_id : {documentum_r_object_id}, content not available in sql r_object_id : {r_object_id}, i_chronicle_id : {i_chronicle_id}, content_id : {content_id}, r_folder_path : {r_folder_path}");
                     }
                     sqlConnection.Close();
                 }
@@ -156,20 +157,21 @@ namespace UpdateSQL
             }
         }
 
-        public void UpdateDB_Articles(SqlConnection sqlConnection, string i_chronicle_id, string r_object_id, string content_id, string r_folder_path, string r_object_type, string i_full_format, string a_webc_url, string documentum_r_object_id, string documentum_i_chronicle_id)
+        public void UpdateDB_Articles(SqlConnection sqlConnection, string i_chronicle_id, string r_object_id, string content_id, string r_folder_path, string r_object_type, string i_full_format, string a_webc_url, string documentum_r_object_id, string documentum_i_chronicle_id, string title)
         {
             try
             {
                 log.Info($"In UpdateDB Method for documentum_r_object_id  : {documentum_r_object_id}");
                 using (SqlCommand command = sqlConnection.CreateCommand())
                 {
-                    command.CommandText = "UPDATE " + Table + " SET r_object_id = @r_object_id, i_chronicle_id = @i_chronicle_id,content_id = @content_id,r_folder_path = @r_folder_path,a_webc_url = @a_webc_url Where r_object_id = @documentum_r_object_id and i_chronicle_id = @documentum_i_chronicle_id and i_full_format= @i_full_format and r_object_type =@r_object_type";
+                    command.CommandText = "UPDATE " + Table + " SET r_object_id = @r_object_id, i_chronicle_id = @i_chronicle_id,content_id = @content_id,r_folder_path = @r_folder_path,a_webc_url = @a_webc_url,object_name=@object_name Where r_object_id = @documentum_r_object_id and i_chronicle_id = @documentum_i_chronicle_id and i_full_format= @i_full_format and r_object_type =@r_object_type";
                     //update column in sql
                     command.Parameters.AddWithValue(Constants.SP_I_CHRONICLE_ID, i_chronicle_id);
                     command.Parameters.AddWithValue(Constants.SP_R_OBJECT_ID, r_object_id);
                     command.Parameters.AddWithValue(Constants.SP_CONTENT_ID, content_id);
                     command.Parameters.AddWithValue(Constants.SP_R_FOLDER_PATH, r_folder_path);
                     command.Parameters.AddWithValue(Constants.SP_A_WEBC_URL, a_webc_url);
+                    command.Parameters.AddWithValue(Constants.SP_OBJECT_NAME, title);
                     //used in where condition
                     command.Parameters.AddWithValue(Constants.SP_R_OBJECT_TYPE, r_object_type);
                     command.Parameters.AddWithValue(Constants.SP_I_FULL_FORMAT, i_full_format);
