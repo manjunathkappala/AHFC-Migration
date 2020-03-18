@@ -57,7 +57,7 @@ namespace LibraryReadApp
                 dtResponse.Merge(dtNewsPressRelease);
             Console.WriteLine("Retrieving Data Successful");
 
-            WriteToCSV(ConfigurationManager.AppSettings.Get("ResponseFilePath") + "Responses.csv", dtResponse);
+            WriteToCSV(ConfigurationManager.AppSettings.Get("OutputFilePath") + "Responses.csv", dtResponse);
 
             Console.ReadLine();
         }
