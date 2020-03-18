@@ -11,12 +11,29 @@ namespace UpdateSQL
     {
         private static log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         static string Filepath = string.Empty;
+        static string userName = string.Empty;
+        static string password = string.Empty;
 
         static void Main(string[] args)
         {
             try
             {
-                ReadFile();
+                if (ConfigurationManager.AppSettings[Constants.SQL_TYPE].ToUpper() == Constants.ONPREMISESSQL)
+                {
+                    ReadFile();
+                }
+                else if (ConfigurationManager.AppSettings[Constants.SQL_TYPE] == Constants.AZURESQL)
+                {
+                    Console.WriteLine("Enter the username to connect Azure SQL db :");
+                    userName = Console.ReadLine();
+                    Console.WriteLine("Enter the password");
+                    password = Console.ReadLine();
+
+                    if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(password))
+                        ReadFile();
+                    else
+                        Console.WriteLine("Please enter proper username and password");
+                }
             }
             catch (Exception ex)
             {
@@ -40,7 +57,7 @@ namespace UpdateSQL
                         DataTable csvData = ConvertCSVtoDataTable(Filepath);
                         log.Info("Number of rows in CSV file : " + csvData.Rows.Count);
                         Console.WriteLine("File read successful.");
-                        sQLDBModify.Update(csvData);
+                        sQLDBModify.Update(csvData, userName, password);
                     }
                     else
                     {

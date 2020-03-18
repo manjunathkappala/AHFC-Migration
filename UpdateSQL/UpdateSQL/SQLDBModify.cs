@@ -13,17 +13,45 @@ namespace UpdateSQL
     {
         private static log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public string Table = string.Empty;
+        public string OnPremSqlDB = string.Empty;
+        public string OnPremSqlServer = string.Empty;
+        public string AzureSqlDB = string.Empty;
+        public string AzureSqlDBServer = string.Empty;
+        public string SqlType = string.Empty;
+        public string ConnectionString = string.Empty;
+
         public SQLDBModify()
         {
             Table = ConfigurationManager.AppSettings[Constants.TABLE_NAME];
+            OnPremSqlDB = ConfigurationManager.AppSettings[Constants.ONPREM_SQLDB];
+            OnPremSqlServer = ConfigurationManager.AppSettings[Constants.ONPREM_SQLSERVER];
+            AzureSqlDB = ConfigurationManager.AppSettings[Constants.AZURE_SQLDB];
+            AzureSqlDBServer = ConfigurationManager.AppSettings[Constants.AZURE_SQL_DBSERVER];
+            SqlType = ConfigurationManager.AppSettings[Constants.SQL_TYPE];
         }
-        public void Update(DataTable csvData)
+        public void Update(DataTable csvData, string userName, string password)
         {
             string documentum_i_chronicle_id = string.Empty, documentum_r_object_id = string.Empty, i_chronicle_id = string.Empty, a_webc_url = string.Empty, title = string.Empty, display_order = string.Empty,
             r_object_id = string.Empty, content_id = string.Empty, r_folder_path = string.Empty, i_full_format = string.Empty, r_object_type = string.Empty;
             try
             {
-                SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.AppSettings[Constants.CONNECTION_STRING]);
+                if (SqlType == Constants.ONPREMISESSQL)
+                {
+
+                    //SQL Integrated Connection string building
+                    ConnectionString =
+                    "Data Source=" + OnPremSqlServer + ";" +
+                    "Initial Catalog=" + OnPremSqlDB + ";" +
+                    "Integrated Security=True;" + "MultipleActiveResultSets=True;" +
+                    "App=EntityFramework providerName=System.Data.EntityClient";
+                }
+
+                else if (SqlType == Constants.AZURESQL)
+                {
+                    //SQL Integrated Connection string building
+                    ConnectionString = "Server =" + AzureSqlDBServer + ";" + "Initial Catalog=" + AzureSqlDB + ";" + "Persist Security Info = False;" + "User ID=" + userName + ";" + "Password=" + password + ";" + "MultipleActiveResultSets = False; Encrypt = True; TrustServerCertificate = False; Connection Timeout = 30";
+                }
+                SqlConnection sqlConnection = new SqlConnection(ConnectionString);
 
                 foreach (DataRow dataRow in csvData.Rows)
                 {

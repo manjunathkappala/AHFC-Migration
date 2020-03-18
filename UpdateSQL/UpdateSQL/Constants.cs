@@ -41,5 +41,12 @@ namespace UpdateSQL
         public const string SP_DOCUMENTUM_R_OBJECT_ID = "@documentum_r_object_id";
         public const string SP_DOCUMENTUM_I_CHRONICLE_ID = "@documentum_i_chronicle_id";
 
+        public const string ONPREM_SQLDB = "OnPremSqlDB";
+        public const string ONPREM_SQLSERVER = "OnPremSqlServer";
+        public const string AZURE_SQLDB = "AzureSqlDB";
+        public const string AZURE_SQL_DBSERVER = "AzureSqlDBServer";
+        public const string SQL_TYPE = "SqlType";
+        public const string ONPREMISESSQL = "OnPremisesSQL";
+        public const string AZURESQL = "AzureSQL";
     }
 }
