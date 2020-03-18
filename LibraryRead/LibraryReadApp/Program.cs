@@ -26,36 +26,46 @@ namespace LibraryReadApp
             TenKTenQ tenKTenQ = new TenKTenQ();
             dt10K10Q = tenKTenQ.GetListFileId();
             if (dt10K10Q != null && dt10K10Q.Rows.Count > 0)
+            {
                 dtResponse.Merge(dt10K10Q);
-            Console.WriteLine("Retrieving Data Successful");
+                Console.WriteLine("Retrieving Data Successful");
+            }
 
             Console.WriteLine("Retrieving Data from library " + ConfigurationManager.AppSettings.Get("SPOFolder8KOther") + ".....");
             EightKOTHERS eightKOTHERS = new EightKOTHERS();
             dt8k = eightKOTHERS.GetListFileId();
             if (dt8k != null && dt8k.Rows.Count > 0)
+            {
                 dtResponse.Merge(dt8k);
-            Console.WriteLine("Retrieving Data Successful");
+                Console.WriteLine("Retrieving Data Successful");
+            }
 
             Console.WriteLine("Retrieving Data from library " + ConfigurationManager.AppSettings.Get("SPOFolderPresentation") + ".....");
             Presentation presentation = new Presentation();
             dtPresentation = presentation.GetListFileId();
             if (dtPresentation != null && dtPresentation.Rows.Count > 0)
+            {
                 dtResponse.Merge(dtPresentation);
-            Console.WriteLine("Retrieving Data Successful");
+                Console.WriteLine("Retrieving Data Successful");
+            }
 
             Console.WriteLine("Retrieving Data from library " + ConfigurationManager.AppSettings.Get("SPOFolderEvents") + ".....");
             Events events = new Events();
             dtEvents = events.GetListFileId();
             if (dtEvents != null && dtEvents.Rows.Count > 0)
+            {
                 dtResponse.Merge(dtEvents);
-            Console.WriteLine("Retrieving Data Successful");
+                Console.WriteLine("Retrieving Data Successful");
+            }
 
             Console.WriteLine("Retrieving Data from library " + ConfigurationManager.AppSettings.Get("SPOFolderNewsPressRelease") + ".....");
             NewsPressRelease newsPressRelease = new NewsPressRelease();
             dtNewsPressRelease = newsPressRelease.GetListFileId();
             if (dtNewsPressRelease != null && dtNewsPressRelease.Rows.Count > 0)
+            {
                 dtResponse.Merge(dtNewsPressRelease);
-            Console.WriteLine("Retrieving Data Successful");
+                Console.WriteLine("Retrieving Data Successful");
+            }
 
             WriteToCSV(ConfigurationManager.AppSettings.Get("OutputFilePath") + "Responses.csv", dtResponse);
 
@@ -66,18 +76,10 @@ namespace LibraryReadApp
         {
             try
             {
+                if (!Directory.Exists(ConfigurationManager.AppSettings.Get("OutputFilePath")))
+                    Directory.CreateDirectory(ConfigurationManager.AppSettings.Get("OutputFilePath"));
+
                 StreamWriter sw = new StreamWriter(fileName, false);
-
-                //for (int i = 0; i < dtDataTable.Rows.Count; i++)
-                //{
-                //    for (int j = 0; j < dtDataTable.Columns.Count; j++)
-                //    {
-                //        dtDataTable.Rows[i][j] = dtDataTable.Rows[i][j].ToString().Replace("\n\r", "");
-                //        dtDataTable.Rows[i][j] = dtDataTable.Rows[i][j].ToString().Replace("\r\n", "");
-                //        //dtDataTable.Rows[i][j] = dtDataTable.Rows[i][j].ToString().Replace(" ", "");
-                //    }
-                //}
-
                 for (int i = 0; i < dtDataTable.Columns.Count; i++)
                 {
                     sw.Write(dtDataTable.Columns[i]);
