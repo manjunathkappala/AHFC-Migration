@@ -98,7 +98,7 @@ namespace GenerateInputFile
                     sw.Write(sw.NewLine);
                 }
                 sw.Close();
-                Console.WriteLine("All the responses are written to file path: " + fileName);
+                Console.WriteLine("All the responses are written to file path - " + fileName);
             }
             catch (Exception ex)
             {
