@@ -83,7 +83,7 @@ namespace UpdateSQL
                             }
                         }
                         else
-                            log.Debug($"SQL data Row count more than 1 - RowCount : {rowCount} for documentum_r_object_id  : {documentum_r_object_id},r_object_id : {r_object_id}, i_chronicle_id : {i_chronicle_id}, content_id : {content_id}, r_folder_path : {r_folder_path}");
+                            log.Debug($"SQL data Row count more than 1 - RowCount : {rowCount} for documentum_r_object_id  : {documentum_r_object_id}, documentum_i_chronicle_id : {documentum_i_chronicle_id}, r_object_id : {r_object_id}, i_chronicle_id : {i_chronicle_id}, content_id : {content_id}, r_folder_path : {r_folder_path}");
                     }
                     else
                     {
@@ -95,7 +95,7 @@ namespace UpdateSQL
                             InsertDB(sqlConnection, r_object_id, content_id, r_object_type, r_folder_path, i_full_format, a_webc_url, title, documentum_r_object_id, i_chronicle_id, display_order);
                         }
                         else
-                            log.Info($"For the given documentum_r_object_id : {documentum_r_object_id}, content not available in sql r_object_id : {r_object_id}, i_chronicle_id : {i_chronicle_id}, content_id : {content_id}, r_folder_path : {r_folder_path}");
+                            log.Info($"For the given documentum_r_object_id : {documentum_r_object_id}, documentum_i_chronicle_id : {documentum_i_chronicle_id}, content not available in sql r_object_id : {r_object_id}, i_chronicle_id : {i_chronicle_id}, content_id : {content_id}, r_folder_path : {r_folder_path}");
                     }
                     sqlConnection.Close();
                 }
@@ -135,7 +135,7 @@ namespace UpdateSQL
                 log.Info($"In UpdateDB Method for documentum_r_object_id  : {documentum_r_object_id}");
                 using (SqlCommand command = sqlConnection.CreateCommand())
                 {
-                    command.CommandText = "UPDATE " + Table + " SET r_object_id = @r_object_id, i_chronicle_id = @i_chronicle_id,content_id = @content_id,r_folder_path = @r_folder_path Where r_object_id = @documentum_r_object_id and i_chronicle_id = @documentum_i_chronicle_id and i_full_format= @i_full_format and r_object_type =@r_object_type";
+                    command.CommandText = "UPDATE " + Table + " SET r_object_id = @r_object_id, i_chronicle_id = @i_chronicle_id,content_id = @content_id,r_folder_path = @r_folder_path,i_contents_id='NULL' Where r_object_id = @documentum_r_object_id and i_chronicle_id = @documentum_i_chronicle_id and i_full_format= @i_full_format and r_object_type =@r_object_type";
                     //update column in sql
                     command.Parameters.AddWithValue(Constants.SP_I_CHRONICLE_ID, i_chronicle_id);
                     command.Parameters.AddWithValue(Constants.SP_R_OBJECT_ID, r_object_id);
@@ -147,13 +147,13 @@ namespace UpdateSQL
                     command.Parameters.AddWithValue(Constants.SP_DOCUMENTUM_R_OBJECT_ID, documentum_r_object_id);
                     command.Parameters.AddWithValue(Constants.SP_DOCUMENTUM_I_CHRONICLE_ID, documentum_i_chronicle_id);
                     command.ExecuteNonQuery();
-                    log.Debug($"Updated SQL data successfully for documentum_r_object_id  : {documentum_r_object_id}, r_object_id : {r_object_id}, i_chronicle_id : {i_chronicle_id}, content_id : {content_id}, r_folder_path : {r_folder_path}");
+                    log.Debug($"Updated SQL data successfully for documentum_r_object_id  : {documentum_r_object_id}, documentum_i_chronicle_id : {documentum_i_chronicle_id}, r_object_id : {r_object_id}, i_chronicle_id : {i_chronicle_id}, content_id : {content_id}, r_folder_path : {r_folder_path}");
 
                 }
             }
             catch (Exception ex)
             {
-                log.Debug($"Exception in UpdateDB Method for documentum_r_object_id  : {documentum_r_object_id}, r_object_id : {r_object_id}, i_chronicle_id : {i_chronicle_id}, content_id : {content_id}, r_folder_path : {r_folder_path}, Error : {ex.Message}");
+                log.Debug($"Exception in UpdateDB Method for documentum_r_object_id  : {documentum_r_object_id}, documentum_i_chronicle_id : {documentum_i_chronicle_id}, r_object_id : {r_object_id}, i_chronicle_id : {i_chronicle_id}, content_id : {content_id}, r_folder_path : {r_folder_path}, Error : {ex.Message}");
             }
         }
 
@@ -164,7 +164,7 @@ namespace UpdateSQL
                 log.Info($"In UpdateDB Method for documentum_r_object_id  : {documentum_r_object_id}");
                 using (SqlCommand command = sqlConnection.CreateCommand())
                 {
-                    command.CommandText = "UPDATE " + Table + " SET r_object_id = @r_object_id, i_chronicle_id = @i_chronicle_id,content_id = @content_id,r_folder_path = @r_folder_path,a_webc_url = @a_webc_url,object_name=@object_name Where r_object_id = @documentum_r_object_id and i_chronicle_id = @documentum_i_chronicle_id and i_full_format= @i_full_format and r_object_type =@r_object_type";
+                    command.CommandText = "UPDATE " + Table + " SET r_object_id = @r_object_id, i_chronicle_id = @i_chronicle_id,content_id = @content_id,r_folder_path = @r_folder_path,a_webc_url = @a_webc_url,object_name=@object_name,i_contents_id='NULL' Where r_object_id = @documentum_r_object_id and i_chronicle_id = @documentum_i_chronicle_id and i_full_format= @i_full_format and r_object_type =@r_object_type";
                     //update column in sql
                     command.Parameters.AddWithValue(Constants.SP_I_CHRONICLE_ID, i_chronicle_id);
                     command.Parameters.AddWithValue(Constants.SP_R_OBJECT_ID, r_object_id);
@@ -178,13 +178,13 @@ namespace UpdateSQL
                     command.Parameters.AddWithValue(Constants.SP_DOCUMENTUM_R_OBJECT_ID, documentum_r_object_id);
                     command.Parameters.AddWithValue(Constants.SP_DOCUMENTUM_I_CHRONICLE_ID, documentum_i_chronicle_id);
                     command.ExecuteNonQuery();
-                    log.Debug($"Updated SQL data successfully for documentum_r_object_id  : {documentum_r_object_id}, r_object_id : {r_object_id}, i_chronicle_id : {i_chronicle_id}, content_id : {content_id}, r_folder_path : {r_folder_path}, a_webc_url : {a_webc_url}");
+                    log.Debug($"Updated SQL data successfully for documentum_r_object_id  : {documentum_r_object_id}, documentum_i_chronicle_id : {documentum_i_chronicle_id}, r_object_id : {r_object_id}, i_chronicle_id : {i_chronicle_id}, content_id : {content_id}, r_folder_path : {r_folder_path}, a_webc_url : {a_webc_url}");
 
                 }
             }
             catch (Exception ex)
             {
-                log.Debug($"Exception in UpdateDB Method for documentum_r_object_id  : {documentum_r_object_id}, r_object_id : {r_object_id}, i_chronicle_id : {i_chronicle_id}, content_id : {content_id}, r_folder_path : {r_folder_path}, Error : {ex.Message}");
+                log.Debug($"Exception in UpdateDB Method for documentum_r_object_id  : {documentum_r_object_id}, documentum_i_chronicle_id : {documentum_i_chronicle_id}, r_object_id : {r_object_id}, i_chronicle_id : {i_chronicle_id}, content_id : {content_id}, r_folder_path : {r_folder_path}, Error : {ex.Message}");
             }
         }
 
