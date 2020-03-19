@@ -17,11 +17,10 @@ namespace LibraryReadApp
 
         public TenKTenQ()
         {
-            dtResponse.Columns.Add(Constants.LibraryName);
+
             dtResponse.Columns.Add(Constants.R_object_type);
             dtResponse.Columns.Add(Constants.Documentum_r_object_id);
             dtResponse.Columns.Add(Constants.Documentum_i_chronicle_id);
-            dtResponse.Columns.Add(Constants.Documentum_content_id);
             dtResponse.Columns.Add(Constants.Documentum_r_folder_path);
             //dtResponse.Columns.Add(Constants.Title);
             dtResponse.Columns.Add(Constants.FileName);
@@ -69,7 +68,7 @@ namespace LibraryReadApp
 
                         fileExtension = System.IO.Path.GetExtension(name).Replace('.', ' ').Trim();
 
-                        dtResponse.Rows.Add(ConfigurationManager.AppSettings.Get(SPOConstants.SPOFolder10K10Q), Constants.Ir_qtrly_report, documentum_r_object_id, documentum_i_chronicle_id, documentum_content_id, Constants.Quarterly_reports_r_folder_path, name, fileExtension, Constants.Quarterly_reports + "/" + name, guid, guid, guid + '@' + guid, Constants.Quarterly_reports, display_order);
+                        dtResponse.Rows.Add(Constants.Ir_qtrly_report, documentum_r_object_id, documentum_i_chronicle_id, Constants.Quarterly_reports_r_folder_path, name, fileExtension, Constants.Quarterly_reports + "/" + name, guid, guid, guid + '@' + guid, Constants.Quarterly_reports, display_order);
 
                     }
                 }

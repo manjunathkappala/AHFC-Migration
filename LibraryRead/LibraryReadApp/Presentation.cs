@@ -17,11 +17,10 @@ namespace LibraryReadApp
 
         public Presentation()
         {
-            dtResponse.Columns.Add(Constants.LibraryName);
+
             dtResponse.Columns.Add(Constants.R_object_type);
             dtResponse.Columns.Add(Constants.Documentum_r_object_id);
             dtResponse.Columns.Add(Constants.Documentum_i_chronicle_id);
-            dtResponse.Columns.Add(Constants.Documentum_content_id);
             dtResponse.Columns.Add(Constants.Documentum_r_folder_path);
             //dtResponse.Columns.Add(Constants.Title);
             dtResponse.Columns.Add(Constants.FileName);
@@ -68,9 +67,9 @@ namespace LibraryReadApp
                         documentum_content_id = keyValuePairs.ContainsKey(SPOConstants.Documentum_content_id) ? (keyValuePairs[SPOConstants.Documentum_content_id] != null ? keyValuePairs[SPOConstants.Documentum_content_id].ToString() : "") : "";
                         display_order = keyValuePairs.ContainsKey(SPOConstants.SortOrder) ? (keyValuePairs[SPOConstants.SortOrder] != null ? keyValuePairs[SPOConstants.SortOrder].ToString() : "0") : "0";
 
-                        dtResponse.Rows.Add(ConfigurationManager.AppSettings.Get(SPOConstants.SPOFolderPresentation), Constants.Ir_presentation, documentum_r_object_id, documentum_i_chronicle_id, documentum_content_id, Constants.Ir_presentation_r_folder_path, Name, FileFormatConstants.PDF, Constants.Presentations + "/" + Name, guid, guid, guid + '@' + guid, Constants.Presentations, display_order);
+                        dtResponse.Rows.Add(Constants.Ir_presentation, documentum_r_object_id, documentum_i_chronicle_id, Constants.Ir_presentation_r_folder_path, Name, FileFormatConstants.PDF, Constants.Presentations + "/" + Name, guid, guid, guid + '@' + guid, Constants.Presentations, display_order);
 
-                        GetChildItem(clientContext, Id, guid, documentum_i_chronicle_id, documentum_r_object_id, documentum_content_id, display_order, ref dtResponse);
+                        GetChildItem(clientContext, Id, guid, documentum_i_chronicle_id, documentum_r_object_id, documentum_content_id, display_order, Name, ref dtResponse);
                     }
                 }
             }
@@ -82,7 +81,7 @@ namespace LibraryReadApp
             return dtResponse;
         }
 
-        private void GetChildItem(ClientContext clientContext, string Id, string ParentGuid, string i_chronicle_id, string r_object_id, string content_id, string display_order, ref DataTable dtResponse)
+        private void GetChildItem(ClientContext clientContext, string Id, string ParentGuid, string i_chronicle_id, string r_object_id, string content_id, string display_order, string ParentFileName, ref DataTable dtResponse)
         {
             string Name = string.Empty, guid = string.Empty, Version = string.Empty, ListId = string.Empty, title = string.Empty,
                    ThumbnailName = string.Empty;
@@ -126,12 +125,11 @@ namespace LibraryReadApp
                     Version = keyValuePairs.ContainsKey(SPOConstants.UIVersionString) ? (keyValuePairs[SPOConstants.UIVersionString] != null ? keyValuePairs[SPOConstants.UIVersionString].ToString() : "") : "";
 
 
-                    dtResponse.Rows.Add(ConfigurationManager.AppSettings.Get(SPOConstants.SPOFolderPresentation), Constants.Ir_presentation, r_object_id, i_chronicle_id, content_id, Constants.Ir_presentation_r_folder_path, Name, FileFormatConstants.JPEG, Constants.Presentations + "/" + Name, ParentGuid, ParentGuid, guid + '@' + ParentGuid, Constants.Presentations, display_order);
+                    dtResponse.Rows.Add(Constants.Ir_presentation, r_object_id, i_chronicle_id, Constants.Ir_presentation_r_folder_path, ParentFileName, FileFormatConstants.JPEG, Constants.Presentations + "/" + Name, ParentGuid, ParentGuid, guid + '@' + ParentGuid, Constants.Presentations, display_order);
                 }
             }
             catch (ServerException ex)
             {
-
                 if (ex.ServerErrorTypeName == "System.IO.FileNotFoundException")
                 {
 

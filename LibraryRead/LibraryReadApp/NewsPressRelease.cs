@@ -16,11 +16,10 @@ namespace LibraryReadApp
         public static DataTable dtResponse = new DataTable();
         public NewsPressRelease()
         {
-            dtResponse.Columns.Add(Constants.LibraryName);
+
             dtResponse.Columns.Add(Constants.R_object_type);
             dtResponse.Columns.Add(Constants.Documentum_r_object_id);
             dtResponse.Columns.Add(Constants.Documentum_i_chronicle_id);
-            dtResponse.Columns.Add(Constants.Documentum_content_id);
             dtResponse.Columns.Add(Constants.Documentum_r_folder_path);
             //dtResponse.Columns.Add(Constants.Title);
             dtResponse.Columns.Add(Constants.FileName);
@@ -69,7 +68,7 @@ namespace LibraryReadApp
                         FieldLookupValue[] lookup = keyValuePairs.ContainsKey(SPOConstants.GalleryImages) ? (FieldLookupValue[])keyValuePairs[SPOConstants.GalleryImages] : null;
                         display_order = keyValuePairs.ContainsKey(SPOConstants.SortOrder) ? (keyValuePairs[SPOConstants.SortOrder] != null ? keyValuePairs[SPOConstants.SortOrder].ToString() : "0") : "0";
 
-                        dtResponse.Rows.Add(ConfigurationManager.AppSettings.Get(SPOConstants.SPOFolderNewsPressRelease), Constants.Ir_article, documentum_r_object_id, documentum_i_chronicle_id, documentum_content_id, Constants.Articles_r_folder_path, name, FileFormatConstants.XML, Constants.Articles + "/" + name, guid, guid, guid + '@' + guid, Constants.Articles, display_order);
+                        dtResponse.Rows.Add(Constants.Ir_article, documentum_r_object_id, documentum_i_chronicle_id, Constants.Articles_r_folder_path, name, FileFormatConstants.XML, Constants.Articles + "/" + name, guid, guid, guid + '@' + guid, Constants.Articles, display_order);
 
                         foreach (var item in lookup)
                         {
@@ -130,12 +129,11 @@ namespace LibraryReadApp
                     Version = keyValuePairs.ContainsKey(SPOConstants.UIVersionString) ? (keyValuePairs[SPOConstants.UIVersionString] != null ? keyValuePairs[SPOConstants.UIVersionString].ToString() : "") : "";
 
 
-                    dtResponse.Rows.Add(ConfigurationManager.AppSettings.Get(SPOConstants.SPOFolderGallery), Constants.Ir_article_image, r_object_id, i_chronicle_id, content_id, Constants.Article_images_r_folder_path, Name, FileFormatConstants.JPEG, Constants.Article_images + "/" + Name, ParentGuid, ParentGuid, guid + '@' + ParentGuid, Constants.Article_images, display_order);
+                    dtResponse.Rows.Add(Constants.Ir_article_image, r_object_id, i_chronicle_id, Constants.Article_images_r_folder_path, Name, FileFormatConstants.JPEG, Constants.Article_images + "/" + Name, ParentGuid, ParentGuid, guid + '@' + ParentGuid, Constants.Article_images, display_order);
                 }
             }
             catch (ServerException ex)
             {
-
                 if (ex.ServerErrorTypeName == "System.IO.FileNotFoundException")
                 {
 

@@ -17,11 +17,10 @@ namespace LibraryReadApp
 
         public Events()
         {
-            dtResponse.Columns.Add(Constants.LibraryName);
+
             dtResponse.Columns.Add(Constants.R_object_type);
             dtResponse.Columns.Add(Constants.Documentum_r_object_id);
             dtResponse.Columns.Add(Constants.Documentum_i_chronicle_id);
-            dtResponse.Columns.Add(Constants.Documentum_content_id);
             dtResponse.Columns.Add(Constants.Documentum_r_folder_path);
             //dtResponse.Columns.Add(Constants.Title);
             dtResponse.Columns.Add(Constants.FileName);
@@ -68,7 +67,7 @@ namespace LibraryReadApp
                         documentum_content_id = keyValuePairs.ContainsKey(SPOConstants.Documentum_content_id) ? (keyValuePairs[SPOConstants.Documentum_content_id] != null ? keyValuePairs[SPOConstants.Documentum_content_id].ToString() : "") : "";
                         display_order = keyValuePairs.ContainsKey(SPOConstants.SortOrder) ? (keyValuePairs[SPOConstants.SortOrder] != null ? keyValuePairs[SPOConstants.SortOrder].ToString() : "0") : "0";
 
-                        dtResponse.Rows.Add(ConfigurationManager.AppSettings.Get(SPOConstants.SPOFolderEvents), Constants.Ir_event, documentum_r_object_id, documentum_i_chronicle_id, documentum_content_id, Constants.Events_r_folder_path, Name, FileFormatConstants.Contentless, Constants.Events + "/" + Name, guid, guid, guid + '@' + guid, Constants.Events, display_order);
+                        dtResponse.Rows.Add(Constants.Ir_event, documentum_r_object_id, documentum_i_chronicle_id, Constants.Events_r_folder_path, Name, FileFormatConstants.Contentless, Constants.Events + "/" + Name, guid, guid, guid + '@' + guid, Constants.Events, display_order);
                     }
                 }
 

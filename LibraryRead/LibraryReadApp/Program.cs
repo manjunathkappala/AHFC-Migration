@@ -67,7 +67,7 @@ namespace LibraryReadApp
                 Console.WriteLine("Retrieving Data Successful");
             }
 
-            WriteToCSV(ConfigurationManager.AppSettings.Get("OutputFilePath") + "Responses.csv", dtResponse);
+            WriteToCSV(ConfigurationManager.AppSettings.Get("OutputFilePath") + "UpdateSQL_InputFile.csv", dtResponse);
 
             Console.ReadLine();
         }
